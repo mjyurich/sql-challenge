@@ -1,0 +1,78 @@
+--1.List of employee details
+SELECT employees.emp_no, 
+	employees.last_name, 
+	employees.first_name,
+	employees.gender,
+	salaries.salary
+FROM employees
+LEFT JOIN salaries ON (employees.emp_no = salaries.emp_no)
+ORDER BY employees.emp_no;
+
+--2.Employees hired in 1986
+SELECT * 
+FROM employees
+WHERE hire_date BETWEEN '1986-01-01' AND '1986-12-31';
+
+--3.List of manager of each departments
+SELECT emp.last_name,
+	emp.first_name,
+	dept_m.emp_no,
+	dept_m.dept_no,
+	dept.dept_name
+FROM dept_manager as dept_m
+INNER JOIN departments as dept
+	ON (dept_m.dept_no = dept.dept_no)
+INNER JOIN employees as emp
+	ON (dept_m.emp_no = emp.emp_no);
+
+--4.List department of each employee
+SELECT emp.emp_no,
+	emp.last_name,
+	emp.first_name,
+	dept.dept_name
+FROM employees as emp
+INNER JOIN dept_emp as dept_e
+	ON (emp.emp_no = dept_e.emp_no)
+INNER JOIN departments as dept
+	ON (dept_e.dept_no = dept.dept_no)
+ORDER BY emp.emp_no;
+
+--5.Find employees named Hercules B.
+SELECT first_name, last_name, gender
+FROM employees 
+WHERE first_name = 'Hercules' 
+AND last_name LIKE 'B%'
+
+--6.List employees in Sales department
+SELECT emp.emp_no,
+	emp.last_name,
+	emp.first_name,
+	dept.dept_name
+FROM employees as emp
+INNER JOIN dept_emp as dept_e
+	ON (emp.emp_no = dept_e.emp_no)
+INNER JOIN departments as dept
+	ON (dept_e.dept_no = dept.dept_no)
+WHERE dept.dept_name = 'Sales'
+ORDER BY emp.emp_no;
+
+--7.List all employees in Sales and Development departments
+SELECT emp.emp_no,
+	emp.last_name,
+	emp.first_name,
+	dept.dept_name
+FROM employees as emp
+INNER JOIN dept_emp as dept_e
+	ON (emp.emp_no = dept_e.emp_no)
+INNER JOIN departments as dept
+	ON (dept_e.dept_no = dept.dept_no)
+WHERE dept.dept_name IN ('Sales', 'Development')
+ORDER BY emp.emp_no;
+
+--8.List frequency count of employee last name, and how many share last name. Descending
+SELECT last_name, COUNT(last_name)
+FROM EMPLOYEES
+GROUP BY last_name
+ORDER BY COUNT(last_name) DESC; 
+
+
